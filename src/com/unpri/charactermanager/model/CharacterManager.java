@@ -1,8 +1,5 @@
 
-package com.unpri.charactermanager;
-
-import com.unpri.charactermanager.model.Character;
-import com.unpri.charactermanager.model.CharacterType;
+package com.unpri.charactermanager.model;
 
 import java.util.ArrayList;
 
