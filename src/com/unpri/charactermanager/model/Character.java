@@ -29,7 +29,16 @@ public class Character {
                 "Nama karakter tidak boleh kosong!"
             );
         }
-        this.name = name.trim();
+
+        String cleanName = name.trim();
+
+        if (cleanName.length() > 30) {
+            throw new IllegalArgumentException(
+                "Nama karakter maksimal 30 karakter!"
+            );
+        }
+
+        this.name = cleanName;
     }
 
     public CharacterType getType() {
@@ -39,10 +48,14 @@ public class Character {
     public void setType(CharacterType type) {
         if (type == null) {
             throw new IllegalArgumentException(
-                "Tipe karakter tidak boleh null!"
+                "Role karakter harus dipilih!"
             );
         }
+
         this.type = type;
+
+        // Validasi ulang level jika role berubah
+        validateLevelForRole(this.level);
     }
 
     public int getLevel() {
@@ -50,12 +63,25 @@ public class Character {
     }
 
     public void setLevel(int level) {
+
         if (level < 1 || level > 99) {
             throw new IllegalArgumentException(
-                "Level harus 1 sampai 99!"
+                "Level harus berada antara 1 sampai 99!"
             );
         }
+
+        validateLevelForRole(level);
         this.level = level;
+    }
+
+    // Mini-Challenge: MAGE maksimal level 60
+    private void validateLevelForRole(int level) {
+
+        if (type == CharacterType.MAGE && level > 60) {
+            throw new IllegalArgumentException(
+                "Karakter MAGE tidak boleh memiliki level di atas 60!"
+            );
+        }
     }
 
     public static int getTotalCharacterCreated() {
