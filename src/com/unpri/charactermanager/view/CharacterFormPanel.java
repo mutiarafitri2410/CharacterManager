@@ -5,7 +5,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import java.awt.*;
-import java.util.ArrayList;
+
+
 
 import com.unpri.charactermanager.model.Character;
 import com.unpri.charactermanager.model.CharacterManager;
