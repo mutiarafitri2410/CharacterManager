@@ -1,101 +1,92 @@
-## TP14 – Character Manager Sprint #6
+# Character Manager
 
-### Form Input, Validasi & Analisis MVC
+## TP12 — Character Manager Sprint #5
+**Layout, UI Responsif & Analisis MVC**
 
-**Mata Kuliah:** Java Visual (SIH-6406)  
-**Universitas:** Universitas Prima Indonesia  
-**Program Studi:** Sistem Informasi  
-**Tugas:** TP14 – AP19 Belajar Praktik
+### 1. Tujuan
+Pada Sprint #5 ini, aplikasi Character Manager dikembangkan dengan menggunakan Layout Manager pada Java Swing. Tujuannya adalah membuat tampilan aplikasi lebih terstruktur, rapi, dan responsif ketika ukuran jendela diubah.
 
-### A. Implementasi CharacterFormPanel
+### 2. Wireframe Aplikasi
 
-Pada TP14, aplikasi Character Manager dikembangkan dengan menambahkan form input karakter menggunakan Java Swing.
+```text
++---------------------------------------------------------------+
+|                    CHARACTER MANAGER                          |
+|             Kelola karakter, role, dan level                  |
+|---------------------------------------------------------------|
+| Total karakter | Rata-rata level | Level tertinggi | Terendah |
++-----------------------------------------------+---------------+
+|                                               | LEGENDA ROLE  |
+|  +----------------+  +----------------+       |               |
+|  | Arjuna         |  | Merlin         |       | WARRIOR       |
+|  | WARRIOR        |  | MAGE           |       | MAGE          |
+|  | Level: 15      |  | Level: 25      |       | ARCHER        |
+|  +----------------+  +----------------+       | HEALER        |
+|                                               |               |
+|  +----------------+  +----------------+       |               |
+|  | Athena         |  | Luna           |       |               |
+|  | ARCHER         |  | HEALER         |       |               |
+|  | Level: 20      |  | Level: 18      |       |               |
+|  +----------------+  +----------------+       |               |
+|                                               |               |
++-----------------------------------------------+---------------+
+| Character Manager | Siap digunakan                  v0.5      |
++---------------------------------------------------------------+
+```
 
-Form terdiri dari tiga komponen utama:
-- `JTextField` untuk memasukkan nama karakter.
-- `JComboBox<CharacterType>` untuk memilih role karakter.
-- `JSpinner` untuk menentukan level karakter dari 1 sampai 99.
+### 3. Implementasi Layout
 
-Form juga dilengkapi dengan tombol tambah karakter dan pesan validasi yang ditampilkan langsung pada aplikasi.
+Aplikasi menggunakan `BorderLayout` sebagai layout utama dengan empat wilayah, yaitu NORTH untuk header dan statistik, CENTER untuk daftar karakter, EAST untuk legenda role, dan SOUTH untuk status bar. Daftar karakter ditempatkan di dalam `JScrollPane` agar pengguna tetap dapat melihat seluruh kartu ketika jendela diperkecil.
 
-### B. Validasi Input
+Legenda menggunakan `BoxLayout` dengan arah Y_AXIS. Data legenda dibuat berdasarkan `CharacterType.values()` sehingga setiap role yang tersedia pada enum dapat ditampilkan tanpa menulis satu per satu secara manual.
 
-Validasi nama dilakukan melalui method `validateName()` dengan empat tahap:
+### 4. Panel Tambahan
 
-1. Kelengkapan: nama tidak boleh kosong.
-2. Panjang: nama maksimal 30 karakter.
-3. Format: nama tidak boleh memiliki spasi ganda.
-4. Keunikan: nama tidak boleh sama dengan karakter yang sudah tersimpan.
+Panel statistik menggunakan `GridLayout(2, 2)` untuk menampilkan empat informasi, yaitu jumlah karakter, rata-rata level, level tertinggi, dan level terendah. `GridLayout` dipilih karena setiap informasi memiliki ruang yang sama dan tersusun rapi dalam dua baris dan dua kolom.
 
-Input nama dibersihkan menggunakan `trim()`. Jika terjadi kesalahan, aplikasi menampilkan pesan di dekat form, memberikan border merah pada kolom nama, dan mengembalikan fokus ke kolom tersebut.
+Saya tidak memilih `FlowLayout` untuk panel statistik karena susunan komponen dapat berpindah baris mengikuti ruang yang tersedia. Untuk informasi statistik, susunan yang konsisten lebih mudah dibaca.
 
-### C. Validasi Model dan Mini-Challenge
+### 5. Screenshot Pengujian
 
-Validasi pada Model memastikan bahwa data tetap benar meskipun berasal dari luar form.
+Simpan screenshot hasil aplikasi ke folder `screenshots/`, lalu masukkan gambar berikut ke repository.
 
-Aturan tambahan yang diterapkan:
+**A. Ukuran awal**
 
-- Karakter MAGE tidak boleh memiliki level di atas 60.
-- Jumlah karakter dalam CharacterManager maksimal 20.
+![Screenshot ukuran awal](screenshots/tp12-awal.png)
 
-Kedua aturan tersebut diletakkan pada Model agar tetap berlaku meskipun data dimasukkan melalui sumber lain, seperti file JSON.
+**B. Jendela dilebarkan**
 
-### D. Aturan Validasi Tambahan
+![Screenshot jendela dilebarkan](screenshots/tp12-lebar.png)
 
-**1. View – Larangan spasi ganda**
+**C. Jendela dikecilkan sampai scrollbar terlihat**
 
-Nama karakter tidak boleh memiliki dua atau lebih spasi berturut-turut. Aturan ini ditempatkan di View karena berkaitan dengan format input yang dimasukkan pengguna.
+![Screenshot jendela dikecilkan](screenshots/tp12-kecil.png)
 
-**2. Model – Maksimal 20 karakter**
+### 6. Tabel Pengamatan Resize
 
-Jumlah karakter yang dapat disimpan dibatasi maksimal 20. Aturan ini ditempatkan di Model karena merupakan aturan pengelolaan data yang harus berlaku untuk semua sumber input.
+| Kondisi | Prediksi | Hasil Pengamatan |
+|---|---|---|
+| Ukuran awal | Header, daftar, legenda, dan status bar terlihat | Isi sesuai hasil pengujian |
+| Jendela dilebarkan | Area CENTER memperoleh ruang lebih besar | Isi sesuai hasil pengujian |
+| Jendela dikecilkan | Daftar tetap dapat diakses melalui scrollbar | Isi sesuai hasil pengujian |
 
-### E. Tabel Pengujian
+**Catatan:** Kolom hasil pengamatan harus diperbarui berdasarkan hasil pengujian aplikasi yang sebenarnya.
 
-| No. | Input | Hasil Diharapkan | Hasil Nyata | Lapisan |
-|---|---|---|---|---|
-| 1 | Nama kosong | Ditolak | Isi setelah pengujian | View |
-| 2 | Nama duplikat | Ditolak | Isi setelah pengujian | View/Model |
-| 3 | Nama dengan spasi di awal/akhir | Diterima setelah trim | Isi setelah pengujian | View |
-| 4 | Nama dengan spasi ganda | Ditolak | Isi setelah pengujian | View |
-| 5 | Nama lebih dari 30 karakter | Ditolak | Isi setelah pengujian | View/Model |
-| 6 | MAGE level 61 | Ditolak | Isi setelah pengujian | Model |
-| 7 | MAGE level 60 | Diterima | Isi setelah pengujian | Model |
-| 8 | Level 100 | Ditolak | Isi setelah pengujian | View |
-| 9 | Nama karakter baru yang valid | Berhasil ditambahkan | Isi setelah pengujian | View dan Model |
-| 10 | Menambahkan karakter ke-21 | Ditolak | Isi setelah pengujian | Model |
+### 7. Struktur Panel Bersarang
 
-**Catatan pengujian:** Kolom hasil nyata harus diisi berdasarkan hasil pengujian langsung pada aplikasi. Jika hasil berbeda dari harapan, lakukan pemeriksaan pada validasi terkait dan perbaiki penyebabnya.
+Struktur tampilan menggunakan panel utama dengan `BorderLayout`. Panel NORTH berisi panel judul dan panel statistik yang menggunakan `GridLayout`. Panel CENTER berisi `JScrollPane`, yang menampung panel pembungkus dan panel kartu karakter. Panel EAST berisi legenda dengan `BoxLayout`, sedangkan panel SOUTH menampilkan status dan versi aplikasi.
 
-### F. Screenshot Pengujian
+### 8. Pengujian
 
-**1. Error nama kosong**
+Pengujian dilakukan dengan menjalankan aplikasi, mengamati susunan komponen pada ukuran awal, memperlebar jendela, kemudian memperkecil jendela sampai scrollbar terlihat. Pengujian juga memastikan delapan karakter ditampilkan dengan role dan level yang berbeda.
 
-Masukkan screenshot ketika tombol tambah ditekan tanpa mengisi nama.
+### 9. Analisis Layout dan MVC
 
-`![Error nama kosong](screenshots/TP14-kosong.png)`
+Dokumen analisis Google Docs:
 
-**2. Error nama duplikat**
+**[Masukkan link Google Docs TP12 di sini]**
 
-Masukkan screenshot ketika pengguna memasukkan nama karakter yang sudah terdaftar.
+### 10. Kesimpulan
 
-`![Error nama duplikat](screenshots/TP14-duplikat.png)`
+Melalui Sprint #5, aplikasi Character Manager menggunakan Layout Manager untuk mengatur komponen secara lebih terstruktur. Penggunaan `BorderLayout`, `GridLayout`, `BoxLayout`, dan `JScrollPane` membantu menjaga tampilan tetap rapi ketika ukuran jendela berubah. Pemisahan package model dan view juga membuat pengelolaan data karakter tidak bergantung pada komponen antarmuka.
 
-**3. Sukses menambahkan karakter**
-
-Masukkan screenshot setelah karakter baru berhasil ditambahkan dan muncul pada daftar.
-
-`![Sukses tambah karakter](screenshots/TP14-sukses.png)`
-
-### G. Kompromi Sementara pada Sprint Ini
-
-Pada Sprint #6, aplikasi masih menggunakan `ActionListener` sederhana untuk menangani tombol tambah karakter. Selain itu, `CharacterFormPanel` masih memanggil `CharacterManager` secara langsung untuk menyimpan data. Pendekatan ini digunakan agar proses pembelajaran form dan validasi lebih mudah dipahami. Pada pengembangan berikutnya, tanggung jawab tersebut diharapkan dipindahkan ke Controller agar View dan Model memiliki pemisahan yang lebih baik.
-
-### H. Google Docs – Analisis Input dan Validasi
-
-**Link Google Docs:** [Masukkan link Google Docs TP14 di sini]
-
-Dokumen tersebut berisi analisis tentang pemilihan komponen input, validasi format dan makna, validasi dua lapis, umpan balik kesalahan, serta hubungan View, Model, dan Controller.
-
----
 https://docs.google.com/document/d/13Brw-Rnh_gnmQr_Pa52cmvyvZVHvio8fgmXFPbB8YJo/edit?usp=sharing
