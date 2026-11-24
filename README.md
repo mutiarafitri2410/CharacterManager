@@ -1,119 +1,101 @@
+## TP14 – Character Manager Sprint #6
 
-# Character Manager – Sprint #2
-## TP5 / AP6 – Java Visual (SIH-6406)
+### Form Input, Validasi & Analisis MVC
 
-**Nama:** Mutiara Fitri Salbilla Harahap  
-**NIM:** 253303621258
+**Mata Kuliah:** Java Visual (SIH-6406)  
 **Universitas:** Universitas Prima Indonesia  
 **Program Studi:** Sistem Informasi  
-**Mata Kuliah:** Java Visual  
-**Dosen:** Dr. Evta Indra  
+**Tugas:** TP14 – AP19 Belajar Praktik
+
+### A. Implementasi CharacterFormPanel
+
+Pada TP14, aplikasi Character Manager dikembangkan dengan menambahkan form input karakter menggunakan Java Swing.
+
+Form terdiri dari tiga komponen utama:
+- `JTextField` untuk memasukkan nama karakter.
+- `JComboBox<CharacterType>` untuk memilih role karakter.
+- `JSpinner` untuk menentukan level karakter dari 1 sampai 99.
+
+Form juga dilengkapi dengan tombol tambah karakter dan pesan validasi yang ditampilkan langsung pada aplikasi.
+
+### B. Validasi Input
+
+Validasi nama dilakukan melalui method `validateName()` dengan empat tahap:
+
+1. Kelengkapan: nama tidak boleh kosong.
+2. Panjang: nama maksimal 30 karakter.
+3. Format: nama tidak boleh memiliki spasi ganda.
+4. Keunikan: nama tidak boleh sama dengan karakter yang sudah tersimpan.
+
+Input nama dibersihkan menggunakan `trim()`. Jika terjadi kesalahan, aplikasi menampilkan pesan di dekat form, memberikan border merah pada kolom nama, dan mengembalikan fokus ke kolom tersebut.
+
+### C. Validasi Model dan Mini-Challenge
+
+Validasi pada Model memastikan bahwa data tetap benar meskipun berasal dari luar form.
+
+Aturan tambahan yang diterapkan:
+
+- Karakter MAGE tidak boleh memiliki level di atas 60.
+- Jumlah karakter dalam CharacterManager maksimal 20.
+
+Kedua aturan tersebut diletakkan pada Model agar tetap berlaku meskipun data dimasukkan melalui sumber lain, seperti file JSON.
+
+### D. Aturan Validasi Tambahan
+
+**1. View – Larangan spasi ganda**
+
+Nama karakter tidak boleh memiliki dua atau lebih spasi berturut-turut. Aturan ini ditempatkan di View karena berkaitan dengan format input yang dimasukkan pengguna.
+
+**2. Model – Maksimal 20 karakter**
+
+Jumlah karakter yang dapat disimpan dibatasi maksimal 20. Aturan ini ditempatkan di Model karena merupakan aturan pengelolaan data yang harus berlaku untuk semua sumber input.
+
+### E. Tabel Pengujian
+
+| No. | Input | Hasil Diharapkan | Hasil Nyata | Lapisan |
+|---|---|---|---|---|
+| 1 | Nama kosong | Ditolak | Isi setelah pengujian | View |
+| 2 | Nama duplikat | Ditolak | Isi setelah pengujian | View/Model |
+| 3 | Nama dengan spasi di awal/akhir | Diterima setelah trim | Isi setelah pengujian | View |
+| 4 | Nama dengan spasi ganda | Ditolak | Isi setelah pengujian | View |
+| 5 | Nama lebih dari 30 karakter | Ditolak | Isi setelah pengujian | View/Model |
+| 6 | MAGE level 61 | Ditolak | Isi setelah pengujian | Model |
+| 7 | MAGE level 60 | Diterima | Isi setelah pengujian | Model |
+| 8 | Level 100 | Ditolak | Isi setelah pengujian | View |
+| 9 | Nama karakter baru yang valid | Berhasil ditambahkan | Isi setelah pengujian | View dan Model |
+| 10 | Menambahkan karakter ke-21 | Ditolak | Isi setelah pengujian | Model |
+
+**Catatan pengujian:** Kolom hasil nyata harus diisi berdasarkan hasil pengujian langsung pada aplikasi. Jika hasil berbeda dari harapan, lakukan pemeriksaan pada validasi terkait dan perbaiki penyebabnya.
+
+### F. Screenshot Pengujian
+
+**1. Error nama kosong**
+
+Masukkan screenshot ketika tombol tambah ditekan tanpa mengisi nama.
+
+`![Error nama kosong](screenshots/TP14-kosong.png)`
+
+**2. Error nama duplikat**
+
+Masukkan screenshot ketika pengguna memasukkan nama karakter yang sudah terdaftar.
+
+`![Error nama duplikat](screenshots/TP14-duplikat.png)`
+
+**3. Sukses menambahkan karakter**
+
+Masukkan screenshot setelah karakter baru berhasil ditambahkan dan muncul pada daftar.
+
+`![Sukses tambah karakter](screenshots/TP14-sukses.png)`
+
+### G. Kompromi Sementara pada Sprint Ini
+
+Pada Sprint #6, aplikasi masih menggunakan `ActionListener` sederhana untuk menangani tombol tambah karakter. Selain itu, `CharacterFormPanel` masih memanggil `CharacterManager` secara langsung untuk menyimpan data. Pendekatan ini digunakan agar proses pembelajaran form dan validasi lebih mudah dipahami. Pada pengembangan berikutnya, tanggung jawab tersebut diharapkan dipindahkan ke Controller agar View dan Model memiliki pemisahan yang lebih baik.
+
+### H. Google Docs – Analisis Input dan Validasi
+
+**Link Google Docs:** [Masukkan link Google Docs TP14 di sini]
+
+Dokumen tersebut berisi analisis tentang pemilihan komponen input, validasi format dan makna, validasi dua lapis, umpan balik kesalahan, serta hubungan View, Model, dan Controller.
 
 ---
-
-## 1. Deskripsi Project
-
-Character Manager Sprint #2 merupakan pengembangan
-project Java yang berfokus pada pengelolaan objek
-Character menggunakan konsep Object-Oriented Programming.
-
-Project ini mengimplementasikan Encapsulation,
-Object Reference, Method, ArrayList, Static,
-dan Defensive Copy.
-
-## 2. Fitur TP5
-
-### Bagian A – Core Implementation
-
-- equals() membandingkan nama karakter.
-- addCharacter() menambahkan karakter.
-- findByName() mencari karakter berdasarkan nama.
-- removeCharacter() menghapus karakter.
-- getTotalCharacters() menghitung jumlah karakter.
-- getAllCharacters() mengembalikan salinan ArrayList.
-- Nama duplikat ditolak.
-
-### Bagian B – Mini Challenge
-
-- getAverageLevel() menghitung rata-rata level.
-- Mengembalikan 0.0 jika daftar kosong.
-- findByType() mencari karakter berdasarkan tipe.
-- Hasil pencarian dikembalikan dalam ArrayList baru.
-
-### Bagian C – Fitur Analitik Mandiri
-
-**findStrongest()**
-
-Method ini digunakan untuk mencari karakter
-dengan level tertinggi di dalam CharacterManager.
-
-Fitur ini membantu pengguna mengetahui karakter
-yang mempunyai level paling tinggi tanpa harus
-memeriksa data satu per satu secara manual.
-
-Method menggunakan perulangan untuk membandingkan
-level setiap karakter. Jika daftar kosong,
-method mengembalikan null.
-
-Method tidak mengekspos ArrayList asli sehingga
-Encapsulation tetap terjaga.
-
-## 3. Konsep Object Reference
-
-Variabel objek Java menyimpan reference yang
-menunjuk ke objek di memory.
-
-Ketika dua variabel menunjuk objek yang sama,
-perubahan melalui salah satu variabel dapat
-terlihat melalui variabel lainnya.
-
-Defensive copy digunakan untuk mencegah
-perubahan struktur ArrayList asli dari luar.
-
-## 4. Pengujian Program
-
-Pengujian yang dilakukan:
-
-1. Menambahkan enam karakter.
-2. Mencoba menambahkan nama duplikat.
-3. Mencari karakter berdasarkan nama.
-4. Menghapus karakter.
-5. Menghitung rata-rata level.
-6. Menguji rata-rata pada list kosong.
-7. Mencari karakter berdasarkan tipe.
-8. Mencari karakter dengan level tertinggi.
-9. Menguji defensive copy menggunakan clear().
-10. Menguji object reference menggunakan a dan b.
-11. Menguji equals() berdasarkan nama.
-12. Menguji static counter.
-
-## 5. Screenshot Output
-
-### Screenshot 1 – CRUD dan Duplikat
-[Masukkan screenshot hasil program bagian CRUD]
-
-### Screenshot 2 – Analytics
-[Masukkan screenshot average level, findByType,
-dan findStrongest]
-
-### Screenshot 3 – Defensive Copy dan Reference
-[Masukkan screenshot eksperimen copy.clear(),
-a == b, dan perubahan level]
-
-## 6. Google Docs – Analisis TP5
-
-Link Google Docs:
-[MASUKKAN LINK GOOGLE DOCS]
-
-## 7. Kesimpulan
-
-Melalui tugas ini, saya mempelajari pengelolaan
-objek menggunakan ArrayList, penggunaan equals(),
-perbedaan reference dan primitive value,
-serta pentingnya Encapsulation dan Defensive Copy
-dalam pengembangan program Java.
-
-Project ini merupakan kelanjutan dari Sprint #1
-dan dikembangkan dengan commit bertahap pada
-repository GitHub yang sama.
 https://docs.google.com/document/d/13Brw-Rnh_gnmQr_Pa52cmvyvZVHvio8fgmXFPbB8YJo/edit?usp=sharing
